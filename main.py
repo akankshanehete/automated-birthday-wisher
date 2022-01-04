@@ -4,7 +4,7 @@ import pandas
 import datetime as dt
 
 my_email = "akankshanehete8@gmail.com"
-password = "//////" # password not given here for security reasons
+password = "//////" # password not given here for obvious reasons
 
 
 # getting quotes from file as lists
@@ -14,22 +14,32 @@ lines = f.read()
 lines_list = lines.splitlines()
 f.close()
 
+letters_list = ["letter_1.txt", "letter_2.txt", "letter_3.txt"]
 
+bdays_df = pandas.read_csv('birthdays.csv')
+bdays_df = pandas.DataFrame(bdays_df)
+print(bdays_df)
+
+# getting current day and month
 now = dt.datetime.now()
 current_weekday = now.weekday()
-current_month = now.month()
-current_day = now.day()
+current_month = now.month
+current_day = now.day
 
-if current_weekday == 1:
-    with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
-        connection.starttls()
-        connection.login(user=my_email, password=password)
-        connection.sendmail(from_addr=my_email,
-                            to_addrs="nehetea@mcmaster.ca",
-                            msg='Subject:Hello, Tuesday!\n\n' + random.choice(lines_list)
-                            )
+for ind in bdays_df.index:
+    if current_month == bdays_df['month'][ind] and current_day == bdays_df['day'][ind]:
+        f = open(random.choice(letters_list), 'r')
+        f_contents = f.read()
+        f_contents = f_contents.replace("[NAME]", bdays_df['name'][ind])
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+            connection.starttls()
+            connection.login(user=my_email, password=password)
+            connection.sendmail(from_addr=my_email,
+                                to_addrs=bdays_df['email'][ind],
+                                msg='Subject:Happy Birthday' + str(bdays_df['name'][ind]) +'!' + '\n\n' + f_contents
+                                )
+        print("email sent!")
 
-date_of_birth= dt.datetime(year=2002, month=9, day=29)
 
 
 
