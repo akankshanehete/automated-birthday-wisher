@@ -3,7 +3,7 @@ import random
 import pandas
 import datetime as dt
 
-my_email = "akankshanehete8@gmail.com"
+my_email = "test@gmail.com"
 password = "//////" # password not given here for obvious reasons
 
 
