@@ -16,6 +16,7 @@ f.close()
 
 letters_list = ["letter_1.txt", "letter_2.txt", "letter_3.txt"]
 
+# reading csv using pandas and extracting dataframe
 bdays_df = pandas.read_csv('birthdays.csv')
 bdays_df = pandas.DataFrame(bdays_df)
 print(bdays_df)
@@ -26,6 +27,7 @@ current_weekday = now.weekday()
 current_month = now.month
 current_day = now.day
 
+# for each birthday in the csv, checking if the current day matches the birthday. If so, bday email is sent
 for ind in bdays_df.index:
     if current_month == bdays_df['month'][ind] and current_day == bdays_df['day'][ind]:
         f = open(random.choice(letters_list), 'r')
